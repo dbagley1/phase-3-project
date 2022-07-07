@@ -1,9 +1,12 @@
+require "json"
+
 class PalettesController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_palette, only: %i[show edit update destroy]
 
   # GET /palettes or /palettes.json
   def index
-    @palettes = Palette.all
+    render json: Palette.all, include: [:colors]
   end
 
   # GET /palettes/1 or /palettes/1.json
@@ -34,21 +37,23 @@ class PalettesController < ApplicationController
         palette.colors.push(*PalettesController.helpers.generate_color_palette_v3(seed, @color_count).map { |hex| Color.new(hex: hex) })
         palette
       end
+
+    render json: @palettes, include: [:colors]
   end
 
   # POST /palettes or /palettes.json
   def create
-    @palette = Palette.new(palette_params)
+    @colors = params[:colors]
+    @colors.map! { |color| Color.where(hex: color[:hex]).first_or_create }
+    @palette = Palette.create(name: params[:name], colors: @colors)
 
-    respond_to do |format|
-      if @palette.save
-        format.html { redirect_to palette_url(@palette), notice: "Palette was successfully created." }
-        format.json { render :show, status: :created, location: @palette }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @palette.errors, status: :unprocessable_entity }
-      end
-    end
+    # respond_to do |format|
+    #   if @palette.save
+    #     render json: @palette, status: :created
+    #   else
+    #     render json: @palette.errors, status: :unprocessable_entity
+    #   end
+    # end
   end
 
   # PATCH/PUT /palettes/1 or /palettes/1.json
@@ -66,12 +71,8 @@ class PalettesController < ApplicationController
 
   # DELETE /palettes/1 or /palettes/1.json
   def destroy
+    @palette = Palette.find(params[:id])
     @palette.destroy
-
-    respond_to do |format|
-      format.html { redirect_to palettes_url, notice: "Palette was successfully destroyed." }
-      format.json { head :no_content }
-    end
   end
 
   private
