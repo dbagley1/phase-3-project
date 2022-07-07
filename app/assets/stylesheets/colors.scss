@@ -1,0 +1,40 @@
+.color-block {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.palettes-container {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.bird-preview {
+  width: 150px;
+  height: 150px;
+}
+
+.palette-box {
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  gap: 15px;
+
+  .palette-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0;
+  }
+}
+
+.palette-colors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}

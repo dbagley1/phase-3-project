@@ -1,0 +1,8 @@
+<p style="color: green"><%= notice %></p>
+<h1>Palettes</h1>
+<div id="palettes" class="palettes-container">
+  <% @palettes.each do |palette| %>
+    <%= render palette, title:true, link:true, div:true %>
+  <% end %>
+</div>
+<%= link_to "New palette", new_palette_path %>

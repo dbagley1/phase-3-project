@@ -1,0 +1,20 @@
+<% if local_assigns[:div] %>
+  <div class="palette-box" id="<%= dom_id palette %>">
+  <% end %>
+  <% if local_assigns[:title] %>
+    <h3 class="palette-title">
+      <% if local_assigns[:link] %>
+        <%= link_to palette.name, palette %>
+      <% else %>
+        <%= palette.name %>
+      <% end %>
+    </h3>
+  <% end %>
+  <div class="palette-colors">
+    <% palette.colors.each do |color| %>
+      <%= render "colors/block", color:color.hex %>
+    <% end %>
+  </div>
+  <% if local_assigns[:div] %>
+  </div>
+<% end %>

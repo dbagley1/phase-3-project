@@ -1,0 +1,8 @@
+<div class="palettes-container">
+  <% @palettes.each.with_index do |palette,i| %>
+    <div class="palette-box" id="<%="palette-#{i}"%>">
+      <%= render "palettes/bird", colors:sort_colors_by_lightness(palette.colors), key:i %>
+      <%= render palette, title:true %>
+    </div>
+  <% end %>
+</div>
